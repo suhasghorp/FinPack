@@ -16,23 +16,8 @@ public class DiscountCurve {
     LocalDate curveDate;
     List<Double> times, values;
     InterpolationTypes method;
-    public DiscountCurve(){}
+    //public DiscountCurve(){}
     public DiscountCurve(LocalDate curveDate, List<Double> times, List<Double> values, InterpolationTypes method) throws Exception {
-        if (times.size() == 0 || values.size() == 0){
-            throw new Exception("times or values has zero size");
-        }
-        if (times.size() != values.size()){
-            throw new Exception("times size does not equals values size");
-        }
-        if (times.get(0) != 0.0){
-            throw new Exception("first time does not equal zero");
-        }
-        if (values.get(0) != 1.0){
-            throw new Exception("first values does not equal one");
-        }
-        if (!MathUtils.checkMonotonicity(times)){
-            throw new Exception("times are not sorted in increasing order");
-        }
         this.curveDate = curveDate;
         this.times = times;
         this.values = values;

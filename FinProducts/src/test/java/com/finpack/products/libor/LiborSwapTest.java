@@ -5,6 +5,7 @@ import com.finpack.curves.LiborCurve;
 import com.finpack.schedule.*;
 import com.finpack.utils.DateUtils;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -54,9 +55,9 @@ public class LiborSwapTest {
         LiborCurve liborCurve = buildLiborCurve(valuationDate);
         double v = swap.value(settlementDate, liborCurve, liborCurve, Optional.of(firstFixing), 0.0);
         //swap.printFixedLeg(valuationDate);
-        swap.printFloatLeg(valuationDate);
+        //swap.printFloatLeg(valuationDate);
         //v_bbg = 388147.0;
-        System.out.println(v);
+        Assertions.assertEquals(393065.4673215106,v, 0.001);
     }
 
 
@@ -303,17 +304,17 @@ public class LiborSwapTest {
         //Check calibration
         for (LiborDeposit depo : depos) {
             double v = depo.value(settlementDate, liborCurve);
-            System.out.println("DEPO VALUE:" + depo.maturityDate +  "  "+ v);
+            //System.out.println("DEPO VALUE:" + depo.maturityDate +  "  "+ v);
         }
 
         for (LiborFRA f : fras) {
             double v = f.value(settlementDate, liborCurve);
-            System.out.println("FRA VALUE:" + f.maturityDate + "  " + v);
+            //System.out.println("FRA VALUE:" + f.maturityDate + "  " + v);
         }
 
         for (LiborSwap swap : swaps) {
             double v = swap.value(settlementDate, liborCurve, liborCurve, Optional.empty(), 1_000_000.0);
-            System.out.println("SWAP VALUE:" + swap.maturityDate + "  " + v);
+            //System.out.println("SWAP VALUE:" + swap.maturityDate + "  " + v);
         }
 
         return liborCurve;

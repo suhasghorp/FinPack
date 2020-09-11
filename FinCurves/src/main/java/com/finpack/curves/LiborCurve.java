@@ -20,18 +20,15 @@ public class LiborCurve extends DiscountCurve {
     List<LiborFRA> liborFRAs;
     List<LiborSwap> liborSwaps;
 
-    public LiborCurve(String name, LocalDate curveDate, List<LiborDeposit> liborDeposits, List<LiborFRA> liborFRAs, List<LiborSwap> liborSwaps, InterpolationTypes interpolationTypes){
+    public LiborCurve(String name, LocalDate curveDate, List<LiborDeposit> liborDeposits, List<LiborFRA> liborFRAs, List<LiborSwap> liborSwaps, InterpolationTypes method) throws Exception {
+        super(curveDate, new ArrayList<Double>(), new ArrayList<Double>(),method);
         this.name = name;
-        this.curveDate = curveDate;
         this.liborDeposits = liborDeposits;
         this.liborFRAs = liborFRAs;
         this.liborSwaps = liborSwaps;
-        this.method = interpolationTypes;
-        this.times = new ArrayList<>();
-        this.values = new ArrayList<>();
-
     }
     public void buildCurve() throws Exception {
+
         double dfMat = 1.0;
         times.add(0.0);
         values.add(dfMat);
