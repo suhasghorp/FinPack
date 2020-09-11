@@ -1,0 +1,321 @@
+package com.finpack.products.libor;
+
+import com.finpack.curves.InterpolationTypes;
+import com.finpack.curves.LiborCurve;
+import com.finpack.schedule.*;
+import com.finpack.utils.DateUtils;
+import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+public class LiborSwapTest {
+    @Test
+    void testLiborSwap() throws Exception {
+        LocalDate startDate = LocalDate.of(2017, 12, 27);
+        LocalDate endDate = LocalDate.of(2067, 12, 27);
+
+        double fixedCoupon = 0.015;
+        FrequencyTypes fixedFreqType = FrequencyTypes.ANNUAL;
+        DayCountTypes fixedDayCountType = DayCountTypes.THIRTY_360;
+
+        double floatSpread = 0.0;
+        FrequencyTypes floatFreqType = FrequencyTypes.SEMI_ANNUAL;
+        DayCountTypes floatDayCountType = DayCountTypes.ACT_360;
+        double firstFixing = -0.00268;
+
+        CalendarTypes swapCalendarType = CalendarTypes.WEEKEND;
+        DayAdjustTypes busDayAdjustType = DayAdjustTypes.FOLLOWING;
+        DateGenRuleTypes dateGenRuleType = DateGenRuleTypes.BACKWARD;
+
+        boolean payFixedFlag = false;
+        double notional = 10.0 * 1_000_000;
+
+        LiborSwap swap = new LiborSwap(startDate,
+                endDate,
+                fixedCoupon,
+                fixedFreqType,
+                fixedDayCountType,
+                notional,
+                floatSpread,
+                floatFreqType,
+                floatDayCountType,
+                payFixedFlag,
+                swapCalendarType,
+                busDayAdjustType,
+                dateGenRuleType);
+        /*Now perform a valuation after the swap has seasoned but with the
+    same curve being used for discounting and working out the implied
+    future Libor rates*/
+        LocalDate valuationDate = LocalDate.of(2018, 11, 30);
+        LocalDate settlementDate = valuationDate.plusDays(2);
+        LiborCurve liborCurve = buildLiborCurve(valuationDate);
+        double v = swap.value(settlementDate, liborCurve, liborCurve, Optional.of(firstFixing), 0.0);
+        //swap.printFixedLeg(valuationDate);
+        swap.printFloatLeg(valuationDate);
+        //v_bbg = 388147.0;
+        System.out.println(v);
+    }
+
+
+    LiborCurve buildLiborCurve(LocalDate valuationDate) throws Exception {
+        LocalDate settlementDate = valuationDate.plusDays(2);
+        DayCountTypes dcType = DayCountTypes.ACT_360;
+
+        List<LiborDeposit> depos = new ArrayList<>();
+        List<LiborFRA> fras = new ArrayList<>();
+        List<LiborSwap> swaps = new ArrayList<>();
+
+        LocalDate maturityDate = settlementDate.plusMonths(6);
+        LiborDeposit depo1 = new LiborDeposit(settlementDate, maturityDate, -0.00251, dcType);
+        depos.add(depo1);
+
+        //Series of 1M futures
+        LocalDate startDate = DateUtils.nextIMMDate(settlementDate);
+        LocalDate endDate = startDate.plusMonths(1);
+        LiborFRA fra = new LiborFRA(startDate, endDate, -0.0023, true, dcType);
+        fras.add(fra);
+
+        startDate = startDate.plusMonths(1);
+        endDate = startDate.plusMonths(1);
+        fra = new LiborFRA(startDate, endDate, -0.00234, true, dcType);
+        fras.add(fra);
+
+        startDate = startDate.plusMonths(1);
+        endDate = startDate.plusMonths(1);
+        fra = new LiborFRA(startDate, endDate, -0.00225, true, dcType);
+        fras.add(fra);
+
+        startDate = startDate.plusMonths(1);
+        endDate = startDate.plusMonths(1);
+        fra = new LiborFRA(startDate, endDate, -0.00226, true, dcType);
+        fras.add(fra);
+
+        startDate = startDate.plusMonths(1);
+        endDate = startDate.plusMonths(1);
+        fra = new LiborFRA(startDate, endDate, -0.00219, true, dcType);
+        fras.add(fra);
+
+        startDate = startDate.plusMonths(1);
+        endDate = startDate.plusMonths(1);
+        fra = new LiborFRA(startDate, endDate, -0.00213, true, dcType);
+        fras.add(fra);
+
+        startDate = startDate.plusMonths(1);
+        endDate = startDate.plusMonths(1);
+        fra = new LiborFRA(startDate, endDate, -0.00186, true, dcType);
+        fras.add(fra);
+
+        startDate = startDate.plusMonths(1);
+        endDate = startDate.plusMonths(1);
+        fra = new LiborFRA(startDate, endDate, -0.00189, true, dcType);
+        fras.add(fra);
+
+        startDate = startDate.plusMonths(1);
+        endDate = startDate.plusMonths(1);
+        fra = new LiborFRA(startDate, endDate, -0.00175, true, dcType);
+        fras.add(fra);
+
+        startDate = startDate.plusMonths(1);
+        endDate = startDate.plusMonths(1);
+        fra = new LiborFRA(startDate, endDate, -0.00143, true, dcType);
+        fras.add(fra);
+
+        startDate = startDate.plusMonths(1);
+        endDate = startDate.plusMonths(1);
+        fra = new LiborFRA(startDate, endDate, -0.00126, true, dcType);
+        fras.add(fra);
+
+        startDate = startDate.plusMonths(1);
+        endDate = startDate.plusMonths(1);
+        fra = new LiborFRA(startDate, endDate, -0.00126, true, dcType);
+        fras.add(fra);
+
+        FrequencyTypes fixedFreq = FrequencyTypes.ANNUAL;
+        dcType = DayCountTypes.THIRTY_360;
+
+        maturityDate = settlementDate.plusMonths(24);
+        LiborSwap swap1 =  new LiborSwap(settlementDate, maturityDate, -0.001506, fixedFreq, dcType);
+        swaps.add(swap1);
+
+        maturityDate = settlementDate.plusMonths(36);
+        LiborSwap swap2 =  new LiborSwap(settlementDate, maturityDate, -0.000185, fixedFreq, dcType);
+        swaps.add(swap2);
+
+        maturityDate = settlementDate.plusMonths(48);
+        LiborSwap swap3 =  new LiborSwap(
+                settlementDate,
+                maturityDate,
+                0.001358,
+                fixedFreq,
+                dcType);
+        swaps.add(swap3);
+
+        maturityDate = settlementDate.plusMonths(60);
+        LiborSwap swap4 =  new LiborSwap(
+                settlementDate,
+                maturityDate,
+                0.0027652,
+                fixedFreq,
+                dcType);
+        swaps.add(swap4);
+
+        maturityDate = settlementDate.plusMonths(72);
+        LiborSwap swap5 =  new LiborSwap(
+                settlementDate,
+                maturityDate,
+                0.0041539,
+                fixedFreq,
+                dcType);
+        swaps.add(swap5);
+
+        maturityDate = settlementDate.plusMonths(84);
+        LiborSwap swap6 =  new LiborSwap(
+                settlementDate,
+                maturityDate,
+                0.0054604,
+                fixedFreq,
+                dcType);
+        swaps.add(swap6);
+
+        maturityDate = settlementDate.plusMonths(96);
+        LiborSwap swap7 =  new LiborSwap(
+                settlementDate,
+                maturityDate,
+                0.006674,
+                fixedFreq,
+                dcType);
+        swaps.add(swap7);
+
+        maturityDate = settlementDate.plusMonths(108);
+        LiborSwap swap8 =  new LiborSwap(
+                settlementDate,
+                maturityDate,
+                0.007826,
+                fixedFreq,
+                dcType);
+        swaps.add(swap8);
+
+        maturityDate = settlementDate.plusMonths(120);
+        LiborSwap swap9 =  new LiborSwap(
+                settlementDate,
+                maturityDate,
+                0.008821,
+                fixedFreq,
+                dcType);
+        swaps.add(swap9);
+
+        maturityDate = settlementDate.plusMonths(132);
+        LiborSwap swap10 =  new LiborSwap(
+                settlementDate,
+                maturityDate,
+                0.0097379,
+                fixedFreq,
+                dcType);
+        swaps.add(swap10);
+
+        maturityDate = settlementDate.plusMonths(144);
+        LiborSwap swap11 =  new LiborSwap(
+                settlementDate,
+                maturityDate,
+                0.0105406,
+                fixedFreq,
+                dcType);
+        swaps.add(swap11);
+
+        maturityDate = settlementDate.plusMonths(180);
+        LiborSwap swap12 =  new LiborSwap(
+                settlementDate,
+                maturityDate,
+                0.0123927,
+                fixedFreq,
+                dcType);
+        swaps.add(swap12);
+
+        maturityDate = settlementDate.plusMonths(240);
+        LiborSwap swap13 =  new LiborSwap(
+                settlementDate,
+                maturityDate,
+                0.0139882,
+                fixedFreq,
+                dcType);
+        swaps.add(swap13);
+
+        maturityDate = settlementDate.plusMonths(300);
+        LiborSwap swap14 =  new LiborSwap(
+                settlementDate,
+                maturityDate,
+                0.0144972,
+                fixedFreq,
+                dcType);
+        swaps.add(swap14);
+
+        maturityDate = settlementDate.plusMonths(360);
+        LiborSwap swap15 =  new LiborSwap(
+                settlementDate,
+                maturityDate,
+                0.0146081,
+                fixedFreq,
+                dcType);
+        swaps.add(swap15);
+
+        maturityDate = settlementDate.plusMonths(420);
+        LiborSwap swap16 =  new LiborSwap(
+                settlementDate,
+                maturityDate,
+                0.01461897,
+                fixedFreq,
+                dcType);
+        swaps.add(swap16);
+
+        maturityDate = settlementDate.plusMonths(480);
+        LiborSwap swap17 =  new LiborSwap(
+                settlementDate,
+                maturityDate,
+                0.014567455,
+                fixedFreq,
+                dcType);
+        swaps.add(swap17);
+
+        maturityDate = settlementDate.plusMonths(540);
+        LiborSwap swap18 =  new LiborSwap(
+                settlementDate,
+                maturityDate,
+                0.0140826,
+                fixedFreq,
+                dcType);
+        swaps.add(swap18);
+
+        maturityDate = settlementDate.plusMonths(600);
+        LiborSwap swap19 =  new LiborSwap(
+                settlementDate,
+                maturityDate,
+                0.01436822,
+                fixedFreq,
+                dcType);
+        swaps.add(swap19);
+
+        LiborCurve liborCurve = new LiborCurve("USD", settlementDate, depos, fras, swaps, InterpolationTypes.FLAT_FORWARDS);
+        liborCurve.buildCurve();
+
+        //Check calibration
+        for (LiborDeposit depo : depos) {
+            double v = depo.value(settlementDate, liborCurve);
+            System.out.println("DEPO VALUE:" + depo.maturityDate +  "  "+ v);
+        }
+
+        for (LiborFRA f : fras) {
+            double v = f.value(settlementDate, liborCurve);
+            System.out.println("FRA VALUE:" + f.maturityDate + "  " + v);
+        }
+
+        for (LiborSwap swap : swaps) {
+            double v = swap.value(settlementDate, liborCurve, liborCurve, Optional.empty(), 1_000_000.0);
+            System.out.println("SWAP VALUE:" + swap.maturityDate + "  " + v);
+        }
+
+        return liborCurve;
+    }
+}
