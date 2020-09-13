@@ -1,5 +1,7 @@
-package com.finpack.schedule;
+package schedule;
 
+import com.finpack.schedule.DayCount;
+import com.finpack.schedule.DayCountTypes;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

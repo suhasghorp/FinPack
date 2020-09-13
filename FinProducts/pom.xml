@@ -9,28 +9,23 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.finpack.products</groupId>
     <artifactId>FinProducts</artifactId>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
-            <groupId>com.finpack.schedule</groupId>
+            <groupId>com.finpack</groupId>
             <artifactId>FinSchedule</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.finpack.utils</groupId>
+            <groupId>com.finpack</groupId>
             <artifactId>FinUtils</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.finpack.curves</groupId>
-            <artifactId>FinCurves</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.finpack.products</groupId>
-            <artifactId>FinProducts</artifactId>
+            <groupId>com.finpack</groupId>
+            <artifactId>FinInterfaces</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

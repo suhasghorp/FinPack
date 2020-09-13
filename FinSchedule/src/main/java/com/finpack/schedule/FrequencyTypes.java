@@ -10,7 +10,7 @@ public enum FrequencyTypes {
     FrequencyTypes(int i){
         this.num = i;
     }
-    int getFrequency(){
+    public int getFrequency(){
         return this.num;
     }
 }

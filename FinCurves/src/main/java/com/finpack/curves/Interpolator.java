@@ -1,5 +1,7 @@
 package com.finpack.curves;
 
+import com.finpack.schedule.InterpolationTypes;
+
 import java.util.List;
 import java.util.stream.Collectors;
 

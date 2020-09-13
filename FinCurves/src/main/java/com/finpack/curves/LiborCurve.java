@@ -3,10 +3,9 @@ package com.finpack.curves;
 import com.finpack.products.libor.LiborDeposit;
 import com.finpack.products.libor.LiborFRA;
 import com.finpack.products.libor.LiborSwap;
+import com.finpack.schedule.InterpolationTypes;
 import org.apache.commons.math3.analysis.UnivariateFunction;
-import org.apache.commons.math3.analysis.solvers.BisectionSolver;
 import org.apache.commons.math3.analysis.solvers.BrentSolver;
-import org.apache.commons.math3.analysis.solvers.NewtonRaphsonSolver;
 import org.apache.commons.math3.analysis.solvers.UnivariateSolver;
 
 import java.time.LocalDate;

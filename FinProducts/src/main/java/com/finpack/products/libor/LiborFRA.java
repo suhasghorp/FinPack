@@ -1,6 +1,7 @@
 package com.finpack.products.libor;
 
-import com.finpack.curves.DiscountCurve;
+import com.finpack.interfaces.IRCurve;
+import com.finpack.interfaces.IRCurve;
 import com.finpack.schedule.*;
 import com.finpack.utils.DateUtils;
 
@@ -66,12 +67,12 @@ public class LiborFRA {
     /*Determine the maturity date discount factor needed to refit
         the FRA given the libor curve anbd the contract FRA rate.*/
 
-    public double maturityDf(DiscountCurve curve) throws Exception {
+    public double maturityDf(IRCurve curve) throws Exception {
         double df1 = curve.df(settlementDate);
         double accFactor = new DayCount(dayCountType).yearFrac(settlementDate, maturityDate, Optional.empty());
         return df1 / (1.0 + accFactor * fraRate);
     }
-    public double value(LocalDate valueDate, DiscountCurve curve) throws Exception{
+    public double value(LocalDate valueDate, IRCurve curve) throws Exception{
         if (valueDate.isAfter(maturityDate))
             throw new Exception("Start date after maturity date");
 

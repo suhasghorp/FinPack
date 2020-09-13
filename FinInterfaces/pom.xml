@@ -9,8 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>FinUtils</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>FinInterfaces</artifactId>
 
 
 </project>

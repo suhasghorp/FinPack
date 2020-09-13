@@ -1,4 +1,4 @@
-package com.finpack.curves;
+package com.finpack.schedule;
 
 public enum InterpolationTypes {
     LINEAR_ZERO_RATES,

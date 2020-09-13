@@ -1,10 +1,9 @@
-package com.finpack.schedule;
+package schedule;
 
+import com.finpack.schedule.*;
 import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ScheduleTest {

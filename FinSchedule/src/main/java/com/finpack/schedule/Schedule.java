@@ -11,7 +11,7 @@ public class Schedule {
     CalendarTypes calendarTypes;
     DayAdjustTypes dayAdjustTypes;
     DateGenRuleTypes dateGenRuleTypes;
-    List<LocalDate> adjustedDates = new ArrayList<>();
+    public List<LocalDate> adjustedDates = new ArrayList<>();
 
     public Schedule(LocalDate startDate, LocalDate endDate, FrequencyTypes frequencyTypes,
                     CalendarTypes calendarTypes,DayAdjustTypes dayAdjustTypes, DateGenRuleTypes dateGenRuleTypes )

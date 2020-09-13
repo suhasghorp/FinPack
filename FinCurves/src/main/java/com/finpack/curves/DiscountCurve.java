@@ -1,10 +1,7 @@
 package com.finpack.curves;
 
-import com.finpack.schedule.CompoundingFrequencyTypes;
-import com.finpack.schedule.DayCount;
-import com.finpack.schedule.DayCountTypes;
-import com.finpack.schedule.FrequencyTypes;
-import com.finpack.utils.MathUtils;
+import com.finpack.interfaces.IRCurve;
+import com.finpack.schedule.*;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -12,20 +9,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DiscountCurve {
+public class DiscountCurve implements IRCurve {
     LocalDate curveDate;
     List<Double> times, values;
+    List<LocalDate> dates;
     InterpolationTypes method;
     //public DiscountCurve(){}
-    public DiscountCurve(LocalDate curveDate, List<Double> times, List<Double> values, InterpolationTypes method) throws Exception {
+    public DiscountCurve(LocalDate curveDate, List<?> times, List<Double> values, InterpolationTypes method) throws Exception {
         this.curveDate = curveDate;
-        this.times = times;
+
+        if (times.get(0) instanceof Double) {
+            this.times = (List<Double>) times;
+        } else if (times.get(0) instanceof LocalDate) {
+            final List l = times;
+            this.dates = (List<LocalDate>) times;
+            for (int i = 0; i < dates.size(); i++){
+                //final List l = times;
+                l.set(i, ChronoUnit.DAYS.between(curveDate,dates.get(i))/365.242);
+            }
+            this.times = l;
+        }
+
         this.values = values;
         this.method = method;
     }
+
+
+    @Override
     public double df(double dt){
         return Interpolator.interpolate(dt, times,values,method);
     }
+
     public double df(LocalDate date){
         double dt = ChronoUnit.DAYS.between(curveDate,date)/365.242;
         return df(dt);

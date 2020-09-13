@@ -1,6 +1,7 @@
 package com.finpack.products.libor;
 
-import com.finpack.curves.DiscountCurve;
+import com.finpack.interfaces.IRCurve;
+import com.finpack.interfaces.IRCurve;
 import com.finpack.schedule.*;
 import com.finpack.utils.DateUtils;
 
@@ -72,7 +73,7 @@ public class LiborDeposit {
     }
 
     /*Determine the value of the Deposit given a Libor curve*/
-    public double value(LocalDate valueDate, DiscountCurve curve) throws Exception{
+    public double value(LocalDate valueDate, IRCurve curve) throws Exception{
         if (valueDate.isAfter(maturityDate))
             throw new Exception("Start date after maturity date");
 

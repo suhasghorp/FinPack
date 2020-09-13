@@ -1,5 +1,7 @@
-package com.finpack.curves;
+package curves;
 
+import com.finpack.curves.Interpolator;
+import com.finpack.schedule.InterpolationTypes;
 import com.finpack.utils.TestUtils;
 import org.junit.jupiter.api.Test;
 

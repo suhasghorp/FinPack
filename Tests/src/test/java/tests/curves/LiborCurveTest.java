@@ -1,15 +1,22 @@
-package com.finpack.curves;
+package curves;
 
+import com.finpack.curves.LiborCurve;
 import com.finpack.products.libor.LiborDeposit;
 import com.finpack.products.libor.LiborFRA;
+import com.finpack.products.libor.LiborInterestRateFuture;
 import com.finpack.products.libor.LiborSwap;
 import com.finpack.schedule.*;
 import com.finpack.utils.DateUtils;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
+import java.io.File;
+import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class LiborCurveTest {
     @Test
@@ -152,4 +159,50 @@ public class LiborCurveTest {
         }
 
     }
+
+    /*@Test
+    void testLiborCurveFromCsv() throws Exception {
+
+        LocalDate valuationDate = LocalDate.of(2020, 9, 10);
+
+        DayCountTypes depoDCCType = DayCountTypes.ACT_360;
+        List<LiborDeposit> depos = new ArrayList<>();
+        List<LiborFRA> fras = new ArrayList<>();
+        List<LiborSwap> swaps = new ArrayList<>();
+
+        int spotDays = 2;
+        LocalDate settlementDate = DateUtils.addWorkdays(valuationDate,spotDays);
+
+        URL url = this.getClass().getResource("/EUR_6M_10_sep_2020.csv");
+        File file = new File(url.getFile());
+        List<List<String>> records = new ArrayList<>();
+        try (Scanner scanner = new Scanner(file)){
+            while (scanner.hasNextLine()) {
+                List<String> values = new ArrayList<String>();
+                try (Scanner rowScanner = new Scanner(scanner.nextLine())){
+                    rowScanner.useDelimiter(",");
+                    while (rowScanner.hasNext()) {
+                        values.add(rowScanner.next());
+                    }
+                }
+                records.add(values);
+            }
+        }
+        for (List<String> line : records){
+            String instrument = line.get(0);
+            LocalDate maturityDate = LocalDate.parse(line.get(4), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+            double rate = Double.parseDouble(line.get(3));
+            switch (instrument){
+                case "Depos":
+                    LiborDeposit depo = new LiborDeposit(settlementDate, maturityDate, rate, depoDCCType, 1_000_000,
+                            CalendarTypes.WEEKEND,DayAdjustTypes.MODIFIED_FOLLOWING);
+                    depos.add(depo);
+                case "Futures":
+                    LiborInterestRateFuture future = new LiborInterestRateFuture(maturityDate, depoDCCType, 1_000_000);
+                    future
+            }
+        }
+
+    }*/
+
 }

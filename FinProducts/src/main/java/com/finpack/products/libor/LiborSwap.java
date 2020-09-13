@@ -1,7 +1,8 @@
 package com.finpack.products.libor;
 
-import com.finpack.curves.DiscountCurve;
-import com.finpack.curves.LiborCurve;
+import com.finpack.interfaces.IRCurve;
+//import com.finpack.curves.LiborCurve;
+import com.finpack.interfaces.IRCurve;
 import com.finpack.schedule.*;
 import com.finpack.utils.DateUtils;
 
@@ -109,7 +110,7 @@ public class LiborSwap {
     public void generateFloatLegPaymentDates() throws Exception {
         adjustedFloatDates = new Schedule(startDate,maturityDate,floatFreqType,calendarType,dayAdjustType,dateGenRuleType).generate();
     }
-    public double fixedLegValue(LocalDate valueDate, DiscountCurve curve, double principal) {
+    public double fixedLegValue(LocalDate valueDate, IRCurve curve, double principal) {
         int startIndex = 0;
         while (adjustedFixedDates.get(startIndex).isBefore(valueDate))
             startIndex++;
@@ -147,7 +148,7 @@ public class LiborSwap {
     }
     /*Value the floating leg with payments from an index curve and
         discounting based on a supplied discount curve*/
-    public double floatLegValue(LocalDate valueDate, LiborCurve discountCurve, LiborCurve indexCurve,Optional<Double> firstFixing,
+    public double floatLegValue(LocalDate valueDate, IRCurve discountCurve, IRCurve indexCurve,Optional<Double> firstFixing,
                                 double principal) throws Exception{
         int startIndex = 0;
         while (adjustedFloatDates.get(startIndex).isBefore(valueDate))
@@ -209,7 +210,7 @@ public class LiborSwap {
         is then a forward swap rate and so we use a forward discount
         factor. If the swap fixed leg has begun then we have a spot
         starting swap.*/
-    public double parCoupon(LocalDate valueDate, LiborCurve discountCurve){
+    public double parCoupon(LocalDate valueDate, IRCurve discountCurve){
         double pv_ONE = pv01(valueDate, discountCurve);
         double df0;
         if (valueDate.isBefore(startDate)) {
@@ -222,14 +223,14 @@ public class LiborSwap {
         return cpn;
     }
     /*Calculate the value of 1 basis point coupon on the fixed leg.*/
-    public double pv01 (LocalDate valueDate, LiborCurve discountCurve){
+    public double pv01 (LocalDate valueDate, IRCurve discountCurve){
         double pv01 = fixedLegValue(valueDate, discountCurve, 1.0);
         pv01 = pv01 / fixedCoupon;
         return pv01;
     }
     /*Value the interest rate swap on a value date given a single Libor
         discount curve. */
-    public double value(LocalDate valueDate, LiborCurve discountCurve, LiborCurve indexCurve,Optional<Double> firstFixing,
+    public double value(LocalDate valueDate, IRCurve discountCurve, IRCurve indexCurve,Optional<Double> firstFixing,
                         double principal) throws Exception{
         double fixedLegValue = fixedLegValue(valueDate, discountCurve, principal);
         double floatLegValue = floatLegValue(valueDate, discountCurve, indexCurve, firstFixing, principal);
