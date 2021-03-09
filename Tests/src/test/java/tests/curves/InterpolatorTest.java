@@ -1,4 +1,4 @@
-package curves;
+package tests.curves;
 
 import com.finpack.curves.Interpolator;
 import com.finpack.schedule.InterpolationTypes;

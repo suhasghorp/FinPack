@@ -1,5 +1,7 @@
 package com.finpack.schedule;
 
+import com.finpack.utils.DateUtils;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ public class Schedule {
 
             while (nextDate.isAfter(startDate)) {
                 unadjustedDates.add(nextDate);
-                nextDate = nextDate.plusMonths(-numOfMonths);
+                nextDate = DateUtils.addWorkdays(nextDate.plusMonths(-numOfMonths),-2);
                 flowNum += 1;
             }
 

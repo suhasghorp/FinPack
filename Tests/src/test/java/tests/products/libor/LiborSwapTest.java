@@ -5,6 +5,7 @@ import com.finpack.curves.LiborCurve;
 import com.finpack.interfaces.IRCurve;
 import com.finpack.products.libor.LiborDeposit;
 import com.finpack.products.libor.LiborFRA;
+import com.finpack.products.libor.LiborInterestRateFuture;
 import com.finpack.products.libor.LiborSwap;
 import com.finpack.schedule.*;
 import com.finpack.utils.DateUtils;
@@ -182,6 +183,7 @@ public class LiborSwapTest {
 
         List<LiborDeposit> depos = new ArrayList<>();
         List<LiborFRA> fras = new ArrayList<>();
+        List<LiborInterestRateFuture> futures = new ArrayList<>();
         List<LiborSwap> swaps = new ArrayList<>();
 
         LocalDate maturityDate = settlementDate.plusMonths(6);
@@ -413,7 +415,7 @@ public class LiborSwapTest {
                 dcType);
         swaps.add(swap19);
 
-        LiborCurve liborCurve = new LiborCurve("USD", settlementDate, depos, fras, swaps, InterpolationTypes.FLAT_FORWARDS);
+        LiborCurve liborCurve = new LiborCurve("USD", settlementDate, depos, fras, futures, swaps, InterpolationTypes.FLAT_FORWARDS);
         liborCurve.buildCurve();
 
         //Check calibration

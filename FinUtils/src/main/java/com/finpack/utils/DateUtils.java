@@ -11,7 +11,7 @@ public class DateUtils {
             String periodType = tenor.substring(tenor.length() - 1);
             int numOfPeriods = Integer.parseInt(tenor.substring(0, tenor.length()-1));
             LocalDate newDate = dt;
-            switch (periodType){
+            switch (periodType.toUpperCase()){
                 case "D":
                     return newDate.plusDays(1 * numOfPeriods);
                 case "W":
@@ -31,6 +31,14 @@ public class DateUtils {
                 newDate = newDate.plusDays(1);
                 if (newDate.getDayOfWeek() != DayOfWeek.SATURDAY || newDate.getDayOfWeek() != DayOfWeek.SUNDAY){
                     numDays = numDays - 1;
+                }
+            }
+            if (numDays < 0) {
+                while (numDays < 0){
+                    newDate = newDate.plusDays(-1);
+                    if (newDate.getDayOfWeek() != DayOfWeek.SATURDAY || newDate.getDayOfWeek() != DayOfWeek.SUNDAY){
+                        numDays = numDays + 1;
+                    }
                 }
             }
             return newDate;

@@ -34,7 +34,8 @@ public class DayCount {
         int y1 = dt1.getYear();
         int y2 = dt2.getYear();
         if (this.dayCountType == DayCountTypes.THIRTY_360){
-            double dayDiff = 360.0 * (y2 - y1) + 30.0 * (m2 - m1) + (d2 - d1);
+            //double dayDiff = 360.0 * (y2 - y1) + 30.0 * (m2 - m1) + (d2 - d1);
+            double dayDiff = ChronoUnit.DAYS.between(dt1,dt2);
             accFactor = dayDiff / 360.0;
         } else if (this.dayCountType == DayCountTypes.THIRTY_360_BOND) {
             d1 = Math.min(d1, 30);

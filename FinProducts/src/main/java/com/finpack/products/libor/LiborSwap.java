@@ -144,6 +144,7 @@ public class LiborSwap {
 
         double z0 = curve.df(valueDate);
         pv = pv / z0;
+        System.out.println("fixedleg pv:" + pv);
         return pv;
     }
     /*Value the floating leg with payments from an index curve and

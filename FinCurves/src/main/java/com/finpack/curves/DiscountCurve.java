@@ -18,16 +18,20 @@ public class DiscountCurve implements IRCurve {
     public DiscountCurve(LocalDate curveDate, List<?> times, List<Double> values, InterpolationTypes method) throws Exception {
         this.curveDate = curveDate;
 
-        if (times.get(0) instanceof Double) {
-            this.times = (List<Double>) times;
-        } else if (times.get(0) instanceof LocalDate) {
-            final List l = times;
-            this.dates = (List<LocalDate>) times;
-            for (int i = 0; i < dates.size(); i++){
-                //final List l = times;
-                l.set(i, ChronoUnit.DAYS.between(curveDate,dates.get(i))/365.242);
+        if (times.size() > 0 ) {
+            if (times.get(0) instanceof Double) {
+                this.times = (List<Double>) times;
+            } else if (times.get(0) instanceof LocalDate) {
+                final List l = times;
+                this.dates = (List<LocalDate>) times;
+                for (int i = 0; i < dates.size(); i++) {
+                    //final List l = times;
+                    l.set(i, ChronoUnit.DAYS.between(curveDate, dates.get(i)) / 365.242);
+                }
+                this.times = l;
             }
-            this.times = l;
+        } else {
+            this.times = (List<Double>) times;
         }
 
         this.values = values;
@@ -44,6 +48,29 @@ public class DiscountCurve implements IRCurve {
         double dt = ChronoUnit.DAYS.between(curveDate,date)/365.242;
         return df(dt);
     }
+
+    @Override
+    public LocalDate getCurveDate() {
+        return curveDate;
+    }
+
+    @Override
+    public List<Double> getTimes() {
+        return this.times;
+    }
+
+    @Override
+    public List<Double> getValues() {
+        return values;
+    }
+
+    @Override
+    public List<LocalDate> getDates() {
+        return dates;
+    }
+
+
+
     public double zeroRate(double dt, CompoundingFrequencyTypes freq) {
         double df = df(dt);
         if (freq == CompoundingFrequencyTypes.SIMPLE_INTEREST){
