@@ -105,10 +105,18 @@ public class LiborSwap {
                 floatDayCountType, payFixedFlag, calendarType, dayAdjustType,dateGenRuleType);
     }
     public void generateFixedLegPaymentDates() throws Exception {
-        adjustedFixedDates = new Schedule(startDate,maturityDate,fixedFreqType,calendarType,dayAdjustType,dateGenRuleType).generate();
+        adjustedFixedDates = new Schedule.Builder(startDate,maturityDate)
+                .withFrequency(fixedFreqType)
+                .withCalendar(calendarType)
+                .withDayAdjust(dayAdjustType)
+                .withDateGenRule(dateGenRuleType).build().getAdjustedDates();
     }
     public void generateFloatLegPaymentDates() throws Exception {
-        adjustedFloatDates = new Schedule(startDate,maturityDate,floatFreqType,calendarType,dayAdjustType,dateGenRuleType).generate();
+        adjustedFloatDates = new Schedule.Builder(startDate,maturityDate)
+                .withFrequency(floatFreqType)
+                .withCalendar(calendarType)
+                .withDayAdjust(dayAdjustType)
+                .withDateGenRule(dateGenRuleType).build().getAdjustedDates();
     }
     public double fixedLegValue(LocalDate valueDate, IRCurve curve, double principal) {
         int startIndex = 0;

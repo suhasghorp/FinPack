@@ -7,8 +7,8 @@ import java.util.Optional;
 
 public class DayCount {
     private DayCountTypes dayCountType;
-    int[] monthDaysNotLeapYear = new int[] {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    int[] monthDaysLeapYear = new int[] {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    private static final int[] monthDaysNotLeapYear = new int[] {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    private static final int[] monthDaysLeapYear = new int[] {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
     public DayCount(DayCountTypes dayCountType){
         this.dayCountType = dayCountType;

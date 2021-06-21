@@ -1,4 +1,4 @@
-package schedule;
+package tests.schedule;
 
 import com.finpack.schedule.*;
 import org.junit.jupiter.api.Test;
@@ -11,35 +11,26 @@ public class ScheduleTest {
     void testSchedule(){
         LocalDate d1 = LocalDate.of(2018, 6, 20);
         LocalDate d2 = LocalDate.of(2028, 6, 20);
-        FrequencyTypes frequencyType = FrequencyTypes.SEMI_ANNUAL;
-        CalendarTypes calendarType = CalendarTypes.WEEKEND;
-        DayAdjustTypes dayAdjustType = DayAdjustTypes.FOLLOWING;
-        DateGenRuleTypes dateGenRuleType = DateGenRuleTypes.BACKWARD;
 
         try {
-            Schedule schedule = new Schedule(
-                    d1,
-                    d2,
-                    frequencyType,
-                    calendarType,
-                    dayAdjustType,
-                    dateGenRuleType);
+            Schedule schedule = new Schedule.Builder(d1,d2)
+                    .withFrequency(FrequencyTypes.SEMI_ANNUAL)
+                    .withCalendar(CalendarTypes.WEEKEND)
+                    .withDayAdjust(DayAdjustTypes.FOLLOWING)
+                    .withDateGenRule(DateGenRuleTypes.BACKWARD).build();
             System.out.println("SEMI-ANNUAL FREQUENCY");
-            for (LocalDate dt : schedule.adjustedDates)
+            for (LocalDate dt : schedule.getAdjustedDates())
                 System.out.println(DateTimeFormatter.ofPattern("MM/dd/yyyy").format(dt));
 
             System.out.println("======================================");
 
-            frequencyType = FrequencyTypes.QUARTERLY;
-            schedule = new Schedule(
-                    d1,
-                    d2,
-                    frequencyType,
-                    calendarType,
-                    dayAdjustType,
-                    dateGenRuleType);
+            schedule = new Schedule.Builder(d1,d2)
+                    .withFrequency(FrequencyTypes.QUARTERLY)
+                    .withCalendar(CalendarTypes.WEEKEND)
+                    .withDayAdjust(DayAdjustTypes.FOLLOWING)
+                    .withDateGenRule(DateGenRuleTypes.BACKWARD).build();
             System.out.println("QUARTERLY FREQUENCY");
-            for (LocalDate dt : schedule.adjustedDates)
+            for (LocalDate dt : schedule.getAdjustedDates())
                 System.out.println(DateTimeFormatter.ofPattern("MM/dd/yyyy").format(dt));
 
 

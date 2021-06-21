@@ -8,27 +8,61 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Schedule {
-    LocalDate startDate, endDate;
-    FrequencyTypes frequencyTypes;
-    CalendarTypes calendarTypes;
-    DayAdjustTypes dayAdjustTypes;
-    DateGenRuleTypes dateGenRuleTypes;
-    public List<LocalDate> adjustedDates = new ArrayList<>();
+    private final LocalDate startDate, endDate;
+    private final FrequencyTypes frequencyTypes;
+    private final CalendarTypes calendarTypes;
+    private final DayAdjustTypes dayAdjustTypes;
+    private final DateGenRuleTypes dateGenRuleTypes;
+    private final List<LocalDate> adjustedDates = new ArrayList<>();
 
-    public Schedule(LocalDate startDate, LocalDate endDate, FrequencyTypes frequencyTypes,
-                    CalendarTypes calendarTypes,DayAdjustTypes dayAdjustTypes, DateGenRuleTypes dateGenRuleTypes )
-                    throws Exception {
-        if (startDate.isAfter(endDate))
-            throw new Exception("Start Date after End Date");
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.frequencyTypes = frequencyTypes;
-        this.calendarTypes = calendarTypes;
-        this.dayAdjustTypes = dayAdjustTypes;
-        this.dateGenRuleTypes = dateGenRuleTypes;
+    public static class Builder {
+        private final LocalDate startDate, endDate;
+        private FrequencyTypes frequencyTypes = FrequencyTypes.SEMI_ANNUAL;
+        private CalendarTypes calendarTypes = CalendarTypes.US;
+        private DayAdjustTypes dayAdjustTypes = DayAdjustTypes.MODIFIED_FOLLOWING;
+        private DateGenRuleTypes dateGenRuleTypes = DateGenRuleTypes.BACKWARD;
+        public Builder(LocalDate startDate, LocalDate endDate){
+            if (startDate.isAfter(endDate))
+                throw new IllegalArgumentException("Start Date after End Date");
+            this.startDate = startDate;
+            this.endDate = endDate;
+        }
+        public Builder withFrequency(FrequencyTypes frequencyTypes){
+            this.frequencyTypes = frequencyTypes;
+            return this;
+        }
+        public Builder withCalendar(CalendarTypes calendarTypes){
+            this.calendarTypes = calendarTypes;
+            return this;
+        }
+        public Builder withDayAdjust(DayAdjustTypes dayAdjustTypes){
+            this.dayAdjustTypes = dayAdjustTypes;
+            return this;
+        }
+        public Builder withDateGenRule(DateGenRuleTypes dateGenRuleTypes){
+            this.dateGenRuleTypes = dateGenRuleTypes;
+            return this;
+        }
+        public Schedule build(){
+            return new Schedule(this);
+        }
     }
 
-    public List<LocalDate> generate(){
+    private Schedule(Builder builder){
+        this.startDate = builder.startDate;
+        this.endDate = builder.endDate;
+        this.frequencyTypes = builder.frequencyTypes;
+        this.calendarTypes = builder.calendarTypes;
+        this.dayAdjustTypes = builder.dayAdjustTypes;
+        this.dateGenRuleTypes = builder.dateGenRuleTypes;
+    }
+
+    public List<LocalDate> getAdjustedDates(){
+        generate();
+        return new ArrayList<>(adjustedDates);
+    }
+
+    public void generate(){
         int numOfMonths = 12/frequencyTypes.getFrequency();
         Calendar calendar = new Calendar(calendarTypes);
         List<LocalDate> unadjustedDates = new ArrayList<>();
@@ -69,7 +103,6 @@ public class Schedule {
             }
             adjustedDates.add(endDate);
         }
-        return adjustedDates;
     }
     public void print(){
         System.out.println("START DATE:" + DateTimeFormatter.ofPattern("MM/dd/yyyy").format(startDate));

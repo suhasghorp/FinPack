@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Calendar {
-    int[] easterMondayDay = new int[] {98, 90, 103, 95, 114, 106, 91, 111, 102, 87,
+    private static int[] easterMondayDay = new int[] {98, 90, 103, 95, 114, 106, 91, 111, 102, 87,
             107, 99, 83, 103, 95, 115, 99, 91, 111, 96, 87,
             107, 92, 112, 103, 95, 108, 100, 91,
             111, 96, 88, 107, 92, 112, 104, 88, 108, 100,

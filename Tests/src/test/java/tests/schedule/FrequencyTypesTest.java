@@ -1,4 +1,4 @@
-package schedule;
+package tests.schedule;
 
 import com.finpack.schedule.FrequencyTypes;
 import org.junit.jupiter.api.Test;
